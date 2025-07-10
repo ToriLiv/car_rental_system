@@ -1,6 +1,8 @@
 package org.example.ENTITIES;
 
-public class Cliente {
+import org.example.INTERFACES.Observer;
+
+public class Cliente implements Observer {
     private String id;
     private String dui;
     private String nombre;
@@ -43,5 +45,10 @@ public class Cliente {
 
     public void setDui(String dui) {
         this.dui = dui;
+    }
+
+    @Override
+    public void actualizar(String mensaje) {
+        System.out.println("Notificación para " + nombre + ": " + mensaje);
     }
 }

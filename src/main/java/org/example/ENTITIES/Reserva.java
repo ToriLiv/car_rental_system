@@ -1,6 +1,7 @@
 package org.example.ENTITIES;
 
 import org.example.INTERFACES.MetodoPago;
+import org.example.INTERFACES.Servicio;
 
 public class Reserva {
     private Cliente cliente;
@@ -59,7 +60,7 @@ public class Reserva {
         this.cantidadDias = cantidadDias;
     }
 
-    //=============METODOS================
+    //=================================METODOS==============================================
     public double calcularCostoTotal() {
         return auto.getPrecioPorDia() * cantidadDias;
     }
@@ -69,10 +70,11 @@ public class Reserva {
         System.out.println("Reserva cancelada para el cliente: " + cliente.getNombre());
     }
 
-    public void confirmarReserva() {
-        this.estado = "Completada";
-        System.out.println("Reserva completada para el cliente: " + cliente.getNombre());
-    }
+
+//    public void confirmarReserva() {
+//        this.estado = "Completada";
+//        System.out.println("Reserva completada para el cliente: " + cliente.getNombre());
+//    }
 
     public void pagar(){
         if (metodoPago != null) {

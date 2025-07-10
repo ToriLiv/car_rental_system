@@ -1,4 +1,4 @@
-package org.example.ENTITIES;
+package org.example.ENTITIES.CAR;
 
 public class Auto {
     private String id;

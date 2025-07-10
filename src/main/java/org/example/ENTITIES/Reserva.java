@@ -1,7 +1,7 @@
 package org.example.ENTITIES;
 
+import org.example.ENTITIES.CAR.Auto;
 import org.example.INTERFACES.MetodoPago;
-import org.example.INTERFACES.Servicio;
 
 public class Reserva {
     private Cliente cliente;
@@ -83,5 +83,17 @@ public class Reserva {
         } else {
             System.out.println("No se ha definido un método de pago para esta reserva.");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "========================================================" +
+                "cliente: " + cliente +
+                "auto: " + auto +
+                "metodo de pago: " + metodoPago +
+                "costo total: " + costoTotal +
+                "cantidad de dias: " + cantidadDias +
+                "estado: " + estado +
+                "\n========================================================";
     }
 }

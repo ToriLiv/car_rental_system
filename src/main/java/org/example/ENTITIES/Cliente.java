@@ -51,4 +51,15 @@ public class Cliente implements Observer {
     public void actualizar(String mensaje) {
         System.out.println("Notificación para " + nombre + ": " + mensaje);
     }
+
+    @Override
+    public String toString() {
+        return  "=========================\n" +
+                "id: " + id +
+                "\ndui: " + dui +
+                "\nnombre: " + nombre +
+                "\nemail: " + email +
+        "\n=========================";
+
+    }
 }

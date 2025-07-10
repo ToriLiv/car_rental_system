@@ -1,6 +1,6 @@
 package org.example.ENTITIES.CAR;
 
-public class Auto {
+public abstract class Auto {
     private String id;
     private String marca;
     private String modelo;
@@ -21,6 +21,8 @@ public class Auto {
         this.disponible = true; //se encuentra disponible por defecto
 
     }
+
+    public abstract String getDescripcion();
 
     public String getId() {
         return id;
@@ -87,11 +89,10 @@ public class Auto {
     }
 
     //==============metodo para obtener la descripcion del auto=====================
-    public String getDescription() {
+    @Override
+    public String toString() {
         return "-------DESCIPCION DEL AUTO---------" + "\nMarca: " + marca + "\nModelo: " + modelo + "\nColor: " + color +
-               "\nMatricula: " + matricula + "\nTipo: " + tipo + "\nPrecio por dia: $" + precioPorDia +
-               "\nDisponible: " + (disponible ? "Si" : "No");
+                "\nMatricula: " + matricula + "\nTipo: " + tipo + "\nPrecio por dia: $" + precioPorDia +
+                "\nDisponible: " + (disponible ? "Si" : "No");
     }
-
-
 }

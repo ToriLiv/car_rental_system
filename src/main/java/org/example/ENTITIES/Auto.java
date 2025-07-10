@@ -85,4 +85,13 @@ public class Auto {
     public void setDisponible(boolean disponible) {
         this.disponible = disponible;
     }
+
+    //==============metodo para obtener la descripcion del auto=====================
+    public String getDescription() {
+        return "-------DESCIPCION DEL AUTO---------" + "\nMarca: " + marca + "\nModelo: " + modelo + "\nColor: " + color +
+               "\nMatricula: " + matricula + "\nTipo: " + tipo + "\nPrecio por dia: $" + precioPorDia +
+               "\nDisponible: " + (disponible ? "Si" : "No");
+    }
+
+
 }

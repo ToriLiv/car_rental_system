@@ -91,7 +91,7 @@ public abstract class Auto {
     //==============metodo para obtener la descripcion del auto=====================
     @Override
     public String toString() {
-        return "-------DESCIPCION DEL AUTO---------" + "\nMarca: " + marca + "\nModelo: " + modelo + "\nColor: " + color +
+        return "-------DESCIPCION DEL AUTO---------" + "\nId: " + id + "\nMarca: " + marca + "\nModelo: " + modelo + "\nColor: " + color +
                 "\nMatricula: " + matricula + "\nTipo: " + tipo + "\nPrecio por dia: $" + precioPorDia +
                 "\nDisponible: " + (disponible ? "Si" : "No");
     }

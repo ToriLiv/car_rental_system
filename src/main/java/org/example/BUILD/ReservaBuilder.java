@@ -18,12 +18,18 @@ public class ReservaBuilder {
     private int cantidadDias;
     private List<ServicioDecorator> extras = new ArrayList<>();
 
-    public void setCliente(Cliente cliente) {
+    public ReservaBuilder setCliente(Cliente cliente) {
         this.cliente = cliente;
+        return this;
     }
 
     public ReservaBuilder setAuto(Auto auto) {
         this.auto = auto;
+        return this;
+    }
+
+public ReservaBuilder setCantidadDias(int cantidadDias) {
+        this.cantidadDias = cantidadDias;
         return this;
     }
 
@@ -42,7 +48,7 @@ public class ReservaBuilder {
     }
 
     public Reserva build() {
-        Reserva reserva = new Reserva(cliente, auto, metodoPago, costoTotal, cantidadDias);
+        Reserva reserva = new Reserva(cliente, auto, metodoPago, cantidadDias);
         for (ServicioDecorator extra : extras) {
             reserva.agregarExtra(extra);
         }

@@ -1,9 +1,6 @@
 package org.example.FACTORY;
 
-import org.example.ENTITIES.CAR.Auto;
-import org.example.ENTITIES.CAR.Deportivo;
-import org.example.ENTITIES.CAR.Economico;
-import org.example.ENTITIES.CAR.Pickup;
+import org.example.ENTITIES.CAR.*;
 
 /**
  * ===================FACTORY===================
@@ -19,8 +16,10 @@ public class AutoFactory {
                 return new Pickup(id, marca, modelo, color, matricula, precioPorDia);
             case "deportivo":
                 return new Deportivo(id, marca, modelo, color, matricula, precioPorDia);
+            case "sedan":
+                return new Sedan(id, marca, modelo, color, matricula, precioPorDia);
             default:
-                throw new IllegalArgumentException("Tipo de auto desconocido: " + tipo);
+                return null;
         }
     }
 

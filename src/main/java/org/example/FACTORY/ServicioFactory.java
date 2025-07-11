@@ -19,6 +19,8 @@ public class ServicioFactory {
                 return new GpsDecorator(servicioBase);
             case "Seguro":
                 return new SeguroDecorator(servicioBase);
+            case "Seguro con GPS":
+                return new SeguroDecorator(new GpsDecorator(servicioBase));
             default:
                 return servicioBase;
         }

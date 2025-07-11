@@ -5,27 +5,31 @@ import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
 import org.example.EXCEPTIONS.AutosNoDisponibles;
 import org.example.EXCEPTIONS.ClienteDuplicado;
+import org.example.EXCEPTIONS.ReservaNoValida;
 import org.example.FACTORY.AutoFactory;
 import org.example.INTERFACES.Observer;
 import org.example.OBSERVER.NotificadorReserva;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SistemaReservas {
-    private  List<Reserva> reservas;
-    private static SistemaReservas instance;
-    private  List<Cliente> clientes;
-    private  List<Auto> autos;
-    private  NotificadorReserva notificador;
+    private  final List<Reserva> reservas;
+    private  static SistemaReservas instance;
+    private  final List<Cliente> clientes;
+    private  final List<Auto> autos = new ArrayList<>();
+    private  final NotificadorReserva notificador;
 
+    public List<Auto> getAutos() {
+        return autos;
+    }
 
-    private SistemaReservas() {
-        inicializarAuto();
-
-        this.reservas = new java.util.ArrayList<>();
-        this.clientes = new java.util.ArrayList<>();
+    public SistemaReservas() {
+        this.reservas = new ArrayList<>();
+        this.clientes = new ArrayList<>();
         this.notificador = new NotificadorReserva();
+        inicializarAuto();
     }
 
     private void inicializarAuto() {
@@ -61,15 +65,20 @@ public class SistemaReservas {
         System.out.println("Cliente registrado: " + cliente.getNombre());
     }
 
-    public void crearReserva(Reserva reserva) {
+    public void crearReserva(Reserva reserva) throws ReservaNoValida {
         reservas.add(reserva);
         System.out.println("Reserva creada para el cliente: " + reserva.getCliente().getNombre());
+        notificador.notificar("¡Su reserva ha sido confirmada!" + reserva.getCliente());
     }
 
-    public void cancelarReserva(Reserva reserva) {
+    public void cancelarReserva(Reserva reserva) throws ReservaNoValida {
         //Lógica para cancelar una reserva
+
+        if(reserva == null || !reservas.contains(reserva)) {
+            throw new ReservaNoValida("La reserva no es válida o no existe.");
+        }
         reserva.cancelarReserva();
-        System.out.println("Reserva cancelada: " + reserva);
+        notificador.notificar("La reserva ha sido cancelada: " + reserva.getCliente().getNombre());
     }
 
     private Auto BuscarAutoDisponible(String tipo) throws AutosNoDisponibles {
@@ -89,6 +98,13 @@ public class SistemaReservas {
     public Cliente BuscarClientePorDui(String dui) {
         return clientes.stream()
                 .filter(cliente -> cliente.getDui().equals(dui))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Cliente BuscarClientePorId(String id) {
+        return clientes.stream()
+                .filter(cliente -> cliente.getId().equals(id))
                 .findFirst()
                 .orElse(null);
     }
@@ -130,5 +146,28 @@ public class SistemaReservas {
             System.out.println(reserva);
         }
 
+    }
+
+    public void mostrarEstadoSistema() {
+        System.out.println("========Estado del Sistema de Reservas==========");
+        System.out.println("Total de Clientes: " + clientes.size());
+        System.out.println("Total de Autos: " + autos.size());
+        System.out.println("Total de Reservas: " + reservas.size());
+        System.out.println("================================================");
+
+    }
+
+    public void mostrarAutosDisponibles() {
+        List<Auto> autosDisponibles = autos.stream()
+                .filter(Auto::isDisponible)
+                .collect(Collectors.toList());
+        if (autosDisponibles.isEmpty()) {
+            System.out.println("No hay autos disponibles actualmente.");
+            return;
+        }
+        System.out.println("=========Lista de Autos Disponibles===========");
+        for (Auto auto : autosDisponibles) {
+            System.out.println(auto);
+        }
     }
 }

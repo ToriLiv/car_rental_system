@@ -12,7 +12,7 @@ public class Reserva {
     private int cantidadDias;
     private String estado;
 
-    public Reserva(Cliente cliente, Auto auto, MetodoPago metodoPago, double costoTotal, int cantidadDias) {
+    public Reserva(Cliente cliente, Auto auto, MetodoPago metodoPago, int cantidadDias) {
         this.cliente = cliente;
         this.auto = auto;
         this.metodoPago = metodoPago;

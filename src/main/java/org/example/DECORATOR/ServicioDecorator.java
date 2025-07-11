@@ -10,6 +10,14 @@ import org.example.INTERFACES.Servicio;
 public class ServicioDecorator implements Servicio {
     protected Servicio servicio;
 
+    public Servicio getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(Servicio servicio) {
+        this.servicio = servicio;
+    }
+
     public ServicioDecorator(Servicio servicio) {
         this.servicio = servicio;
     }

@@ -71,11 +71,6 @@ public class Reserva {
     }
 
 
-//    public void confirmarReserva() {
-//        this.estado = "Completada";
-//        System.out.println("Reserva completada para el cliente: " + cliente.getNombre());
-//    }
-
     public void pagar(){
         if (metodoPago != null) {
             metodoPago.pagar(costoTotal);

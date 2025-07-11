@@ -1,10 +1,14 @@
 package org.example.BUILD;
 
+import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
 import org.example.INTERFACES.MetodoPago;
 import org.example.INTERFACES.Servicio;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReservaBuilder {
     private Cliente cliente;
@@ -12,42 +16,37 @@ public class ReservaBuilder {
     private MetodoPago metodoPago;
     private double costoTotal;
     private int cantidadDias;
-    private String estado;
-
-    public ReservaBuilder(Cliente cliente, Auto auto, MetodoPago metodoPago, double costoTotal, int cantidadDias) {
-        this.cliente = cliente;
-        this.auto = auto;
-        this.metodoPago = metodoPago;
-        this.costoTotal = costoTotal;
-        this.cantidadDias = cantidadDias;
-        this.estado = "Pendiente";
-    }
+    private List<ServicioDecorator> extras = new ArrayList<>();
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
 
-    public void setAuto(Auto auto) {
+    public ReservaBuilder setAuto(Auto auto) {
         this.auto = auto;
+        return this;
     }
 
-    public void setMetodoPago(MetodoPago metodoPago) {
+    public ReservaBuilder setMetodoPago(MetodoPago metodoPago) {
         this.metodoPago = metodoPago;
+        return this;
     }
 
-    public void setCostoTotal(double costoTotal) {
-        this.costoTotal = costoTotal;
+    public void setExtras(List<ServicioDecorator> extras) {
+        this.extras = extras;
     }
 
-    public void setCantidadDias(int cantidadDias) {
-        this.cantidadDias = cantidadDias;
+    public ReservaBuilder addServicioExtra(ServicioDecorator extra) {
+        this.extras.add(extra);
+        return this;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public Reserva build() {
+        Reserva reserva = new Reserva(cliente, auto, metodoPago, costoTotal, cantidadDias);
+        for (ServicioDecorator extra : extras) {
+            reserva.agregarExtra(extra);
+        }
+        return reserva;
     }
 
-    public Reserva build(){
-        return new Reserva(cliente, auto, metodoPago, costoTotal, cantidadDias);
-    }
 }

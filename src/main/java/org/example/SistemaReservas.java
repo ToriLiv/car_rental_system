@@ -3,12 +3,14 @@ package org.example;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
+import org.example.EXCEPTIONS.AutosNoDisponibles;
 import org.example.EXCEPTIONS.ClienteDuplicado;
 import org.example.FACTORY.AutoFactory;
 import org.example.INTERFACES.Observer;
 import org.example.OBSERVER.NotificadorReserva;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SistemaReservas {
     private  List<Reserva> reservas;
@@ -66,10 +68,67 @@ public class SistemaReservas {
 
     public void cancelarReserva(Reserva reserva) {
         //Lógica para cancelar una reserva
+        reserva.cancelarReserva();
         System.out.println("Reserva cancelada: " + reserva);
     }
 
-    public List<Reserva> getReservas() {
-        return reservas;
+    private Auto BuscarAutoDisponible(String tipo) throws AutosNoDisponibles {
+        List<Auto> autosDisponibles = BuscarAutosDisponibles(tipo);
+        if (autosDisponibles.isEmpty()) {
+            throw new AutosNoDisponibles("No hay autos disponibles del tipo: " + tipo);
+        }
+        return autosDisponibles.get(0);
+    }
+
+    private List<Auto> BuscarAutosDisponibles(String tipo) {
+        return autos.stream()
+                .filter(auto -> auto.getTipo().equalsIgnoreCase(tipo) && auto.isDisponible())
+                .collect(Collectors.toList());
+    }
+
+    public Cliente BuscarClientePorDui(String dui) {
+        return clientes.stream()
+                .filter(cliente -> cliente.getDui().equals(dui))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Auto> BuscarAutosPorTipo(String tipo) {
+        return autos.stream()
+                .filter(auto -> auto.getTipo().equalsIgnoreCase(tipo))
+                .collect(Collectors.toList());
+    }
+
+    public List<Reserva> BuscarReservaPorClient(String dui) {
+        Cliente cliente = BuscarClientePorDui(dui);
+        if (cliente == null) {
+            return List.of();
+        }
+        return reservas.stream()
+                .filter(reserva -> reserva.getCliente().getDui().equals(dui))
+                .collect(Collectors.toList());
+    }
+
+    public void mostrarClientes() {
+        if (clientes.isEmpty()) {
+            System.out.println("No hay clientes registrados.");
+            return;
+        }
+        System.out.println("Lista de Clientes:");
+        for (Cliente cliente : clientes) {
+            System.out.println(cliente);
+        }
+    }
+
+    public void mostrarReservas() {
+        if (reservas.isEmpty()) {
+            System.out.println("No hay reservas registradas.");
+            return;
+        }
+        System.out.println("Lista de Reservas:");
+        for (Reserva reserva : reservas) {
+            System.out.println(reserva);
+        }
+
     }
 }

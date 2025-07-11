@@ -1,5 +1,6 @@
 package org.example.ENTITIES;
 
+import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.INTERFACES.MetodoPago;
 
@@ -90,5 +91,14 @@ public class Reserva {
                 "cantidad de dias: " + cantidadDias +
                 "estado: " + estado +
                 "\n========================================================";
+    }
+
+    public void agregarExtra(ServicioDecorator extra) {
+        if (extra != null) {
+            this.costoTotal += extra.getPrecio();
+            System.out.println("Servicio extra agregado: " + extra.getDescripcion() + " - Costo adicional: " + extra.getPrecio());
+        } else {
+            System.out.println("No se ha definido un servicio extra para esta reserva.");
+        }
     }
 }

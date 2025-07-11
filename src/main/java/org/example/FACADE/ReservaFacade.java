@@ -7,33 +7,32 @@ import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
 import org.example.INTERFACES.MetodoPago;
 import org.example.INTERFACES.Servicio;
+import org.example.OBSERVER.NotificadorReserva;
+import org.example.SistemaReservas;
 
 
 import java.util.List;
 
 public class ReservaFacade {
-    public Reserva realizarReserva(Cliente cliente, Auto auto, List<ServicioDecorator> servicios, MetodoPago metodoPago, int cantidadDias) {
-        Servicio servicioAdicional = null;
+    public void realizarReserva(Cliente cliente, Auto auto, List<ServicioDecorator> extras, MetodoPago metodoPago) {
+        ReservaBuilder builder = new ReservaBuilder()
+                .setAuto(auto)
+                .setMetodoPago(metodoPago);
 
-        for (ServicioDecorator decorador : servicios) {
-            if (servicioAdicional == null) {
-                servicioAdicional = decorador;
-            } else {
-                decorador.setServicio(servicioAdicional);
-                servicioAdicional = decorador;
-            }
+        for (ServicioDecorator extra : extras) {
+            builder.addServicioExtra(extra);
         }
 
-        double costoTotal = auto.getPrecioPorDia();
-        if (servicioAdicional != null) {
-            costoTotal += servicioAdicional.getPrecio();
-        }
-
-
-        ReservaBuilder builder = new ReservaBuilder(cliente, auto, metodoPago, costoTotal, cantidadDias);
         Reserva reserva = builder.build();
+        reserva.calcularCostoTotal();
+        reserva.pagar();
 
-        return reserva;
+        NotificadorReserva notificador = new NotificadorReserva();
+        notificador.agregarObservador(cliente);
+        notificador.notificar("¡Su reserva ha sido confirmada!");
+
+        SistemaReservas.getInstance().crearReserva(reserva);
     }
+
 
 }

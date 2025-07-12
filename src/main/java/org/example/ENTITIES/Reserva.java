@@ -14,7 +14,7 @@ public class Reserva {
     private double costoTotal;
     private int cantidadDias;
     private String estado;
-    private List<ServicioDecorator> extras;
+    private ServicioDecorator servicioFinal;
 
     public Reserva(Cliente cliente, Auto auto, MetodoPago metodoPago, int cantidadDias) {
         this.cliente = cliente;
@@ -23,7 +23,6 @@ public class Reserva {
         this.cantidadDias = cantidadDias;
         this.auto.setDisponible(false);
         this.estado = "Pendiente";
-        this.extras = new ArrayList<>();
     }
 
     public Cliente getCliente() {
@@ -68,12 +67,13 @@ public class Reserva {
     //=================================METODOS==============================================
     public void calcularCostoTotal() {
         double costoBase = auto.getPrecioPorDia() * cantidadDias;
-        double costoExtras = 0;
+        double costoExtras = (servicioFinal != null) ? servicioFinal.obtenerCosto() : 0;
 
-        for (ServicioDecorator extra : extras) {
-            costoExtras += extra.obtenerCosto();
-        }
         this.costoTotal = costoBase + costoExtras;
+
+        System.out.println("Costo base: $" + costoBase);
+        System.out.println("Costo servicios: $" + costoExtras);
+        System.out.println("Total a pagar: $" + this.costoTotal);
     }
 
     public void cancelarReserva() {
@@ -93,22 +93,17 @@ public class Reserva {
 
     @Override
     public String toString() {
-        return "========================================================" +
-                "cliente: " + cliente +
-                "auto: " + auto +
-                "metodo de pago: " + metodoPago +
-                "costo total: " + costoTotal +
-                "cantidad de dias: " + cantidadDias +
-                "estado: " + estado +
-                "\n========================================================";
+        return "========================================================\n" +
+                "Cliente:\n" + cliente.toString() +
+                "Auto:\n" + auto.toString() +
+                "Método de pago: " + metodoPago.toString() + "\n" +
+                "Costo total: $" + costoTotal + "\n" +
+                "Cantidad de días: " + cantidadDias + "\n" +
+                "Estado: " + estado + "\n" +
+                "========================================================\n";
     }
 
-    public void agregarExtra(ServicioDecorator extra) {
-        if (extra != null) {
-            this.extras.add(extra);
-            System.out.println("Servicio extra agregado: " + extra.getDescripcion() + " - Costo adicional: " + extra.getPrecio());
-        } else {
-            System.out.println("No se ha definido un servicio extra para esta reserva.");
-        }
+    public void setServicioDecorado(ServicioDecorator servicioFinal) {
+        this.servicioFinal = servicioFinal;
     }
 }

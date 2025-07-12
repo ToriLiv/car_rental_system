@@ -5,11 +5,14 @@ import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
+import org.example.ENTITIES.ServicioBase;
 import org.example.EXCEPTIONS.ClienteDuplicado;
 import org.example.FACADE.ReservaFacade;
 import org.example.FACTORY.MetodoPagoFactory;
+import org.example.FACTORY.ServicioFactory;
 import org.example.INTERFACES.AutoInfoDisponible;
 import org.example.INTERFACES.MetodoPago;
+import org.example.INTERFACES.Servicio;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,8 @@ public class Main {
                     case 6:
                         crearReserva(scanner);
                         break;
+                    case 7:
+                        sistemaReserva.mostrarReservas();
                     case 0:
                         System.out.println("Saliendo del sistema de reservas...");
                         break;
@@ -219,43 +224,33 @@ public class Main {
         MetodoPago metodoPago = MetodoPagoFactory.obtenerMetodoPago(tipoPago);
 
         //============================================================
+        Servicio servicioFinal = new ServicioBase();
         System.out.print("¿Desea agregar servicios adicionales? (si/no): ");
         String respuesta = scanner.nextLine();
-        List<ServicioDecorator> serviciosAdicionales = new ArrayList<>();
-        String tipoServicio = "";
+
         if (respuesta.equalsIgnoreCase("si")) {
             System.out.println("Seleccione los servicios adicionales:");
             System.out.println("1. GPS");
             System.out.println("2. Seguro");
             System.out.println("3. GPS y Seguro");
-            System.out.print("Ingrese opcion: ");
-            tipoServicio = scanner.nextLine();
-            if(tipoServicio.isEmpty()) {
-                System.out.println("El tipo de servicio no puede estar vacío. No se agregará ningún servicio.");
-                tipoServicio = "";
-            }
-            if(tipoServicio.equals("1")) {
-                tipoServicio = "gps";
-            } else if(tipoServicio.equals("2")) {
-                tipoServicio = "seguro";
-            } else if(tipoServicio.equals("3")) {
-                tipoServicio = "gps y seguro";
-            } else if(tipoServicio.equals("4")) {
-                tipoServicio = "todo incluido";
-            } else {
-                System.out.println("Tipo de servicio no reconocido. No se agregará ningún servicio.");
-                tipoServicio = "";
-            }
+            System.out.print("Ingrese opción: ");
+            String tipoServicio = scanner.nextLine();
 
+            servicioFinal = ServicioFactory.crearServicio(tipoServicio, new ServicioBase());
             Reserva reserva = reservaFacade.realizarReserva(
                     cliente,
                     autoSeleccionado,
-                    serviciosAdicionales,
+                    servicioFinal instanceof ServicioDecorator
+                            ? (ServicioDecorator) servicioFinal
+                            : new ServicioDecorator(servicioFinal, 0),
                     metodoPago,
                     cantidadDias
             );
             System.out.println("\nReserva registrada exitosamente.");
-         }
+
         }
+
     }
+
+}
 

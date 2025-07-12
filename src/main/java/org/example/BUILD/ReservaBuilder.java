@@ -21,7 +21,7 @@ public class ReservaBuilder {
     private MetodoPago metodoPago;
     private double costoTotal;
     private int cantidadDias;
-    private List<ServicioDecorator> extras = new ArrayList<>();
+    private ServicioDecorator servicioFinal;
 
     public ReservaBuilder setCliente(Cliente cliente) {
         this.cliente = cliente;
@@ -43,20 +43,14 @@ public ReservaBuilder setCantidadDias(int cantidadDias) {
         return this;
     }
 
-    public void setExtras(List<ServicioDecorator> extras) {
-        this.extras = extras;
-    }
-
-    public ReservaBuilder addServicioExtra(ServicioDecorator extra) {
-        this.extras.add(extra);
+    public ReservaBuilder setServicioDecorado(ServicioDecorator servicioFinal) {
+        this.servicioFinal = servicioFinal;
         return this;
     }
 
     public Reserva build() {
         Reserva reserva = new Reserva(cliente, auto, metodoPago, cantidadDias);
-        for (ServicioDecorator extra : extras) {
-            reserva.agregarExtra(extra);
-        }
+        reserva.setServicioDecorado(servicioFinal);
         return reserva;
     }
 

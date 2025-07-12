@@ -20,20 +20,18 @@ import java.util.List;
  * * ======================================================================================
  */
 public class ReservaFacade {
-    public Reserva realizarReserva(Cliente cliente, Auto auto, List<ServicioDecorator> extras, MetodoPago metodoPago, int cantidadDias) {
+    public Reserva realizarReserva(Cliente cliente, Auto auto, ServicioDecorator servicioFinal, MetodoPago metodoPago, int cantidadDias) {
         ReservaBuilder builder = new ReservaBuilder()
                 .setCliente(cliente)
                 .setAuto(auto)
                 .setMetodoPago(metodoPago)
-                .setCantidadDias(cantidadDias);
-
-        for (ServicioDecorator extra : extras) {
-            builder.addServicioExtra(extra);
-        }
+                .setCantidadDias(cantidadDias)
+                .setServicioDecorado(servicioFinal);
 
         Reserva reserva = builder.build();
         reserva.calcularCostoTotal();
         reserva.pagar();
+
 
         NotificadorReserva notificador = new NotificadorReserva();
         notificador.agregarObservador(cliente);

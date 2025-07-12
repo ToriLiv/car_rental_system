@@ -5,7 +5,12 @@ import org.example.ENTITIES.CAR.Auto;
 import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
 import org.example.INTERFACES.MetodoPago;
-import org.example.INTERFACES.Servicio;
+
+/*=====================================BUILD========================================================
+ * ReservaBuilder es una clase que permite construir objetos Reserva de manera fluida.
+ * Utiliza el patrón Builder para facilitar la creación de reservas con diferentes configuraciones.
+ * ==================================================================================================
+ */
 
 import java.util.ArrayList;
 import java.util.List;

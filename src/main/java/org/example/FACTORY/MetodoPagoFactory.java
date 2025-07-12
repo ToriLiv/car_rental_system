@@ -7,12 +7,12 @@ import org.example.STRATEGY.TarjetaCredito;
 public class MetodoPagoFactory {
     public static MetodoPago obtenerMetodoPago(String tipo) {
         switch (tipo.toLowerCase()) {
-            case "tarjeta de credito":
+            case "1":
                 return new TarjetaCredito();
-            case "paypal":
+            case "2":
                 return new Paypal();
             default:
-                throw new IllegalArgumentException("Método de pago no válido: " + tipo);
+                return null;
         }
     }
 }

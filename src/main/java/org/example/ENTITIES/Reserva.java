@@ -4,6 +4,9 @@ import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.INTERFACES.MetodoPago;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Reserva {
     private Cliente cliente;
     private Auto auto;
@@ -11,15 +14,16 @@ public class Reserva {
     private double costoTotal;
     private int cantidadDias;
     private String estado;
+    private List<ServicioDecorator> extras;
 
     public Reserva(Cliente cliente, Auto auto, MetodoPago metodoPago, int cantidadDias) {
         this.cliente = cliente;
         this.auto = auto;
         this.metodoPago = metodoPago;
-        this.costoTotal = calcularCostoTotal();
         this.cantidadDias = cantidadDias;
         this.auto.setDisponible(false);
         this.estado = "Pendiente";
+        this.extras = new ArrayList<>();
     }
 
     public Cliente getCliente() {
@@ -62,8 +66,14 @@ public class Reserva {
     }
 
     //=================================METODOS==============================================
-    public double calcularCostoTotal() {
-        return auto.getPrecioPorDia() * cantidadDias;
+    public void calcularCostoTotal() {
+        double costoBase = auto.getPrecioPorDia() * cantidadDias;
+        double costoExtras = 0;
+
+        for (ServicioDecorator extra : extras) {
+            costoExtras += extra.obtenerCosto();
+        }
+        this.costoTotal = costoBase + costoExtras;
     }
 
     public void cancelarReserva() {
@@ -95,7 +105,7 @@ public class Reserva {
 
     public void agregarExtra(ServicioDecorator extra) {
         if (extra != null) {
-            this.costoTotal += extra.getPrecio();
+            this.extras.add(extra);
             System.out.println("Servicio extra agregado: " + extra.getDescripcion() + " - Costo adicional: " + extra.getPrecio());
         } else {
             System.out.println("No se ha definido un servicio extra para esta reserva.");

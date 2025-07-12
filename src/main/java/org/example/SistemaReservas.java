@@ -42,7 +42,7 @@ public class SistemaReservas {
         autos.add(AutoFactory.crearAuto("7", "Chevrolet", "Silverado", "Blanco", "STU111", "pickup", 160.0));
         autos.add(AutoFactory.crearAuto("8", "Honda", "Accord", "Gris", "VWX222", "sedan", 120.0));
         autos.add(AutoFactory.crearAuto("9", "Toyota", "Camry", "Negro", "YZA333", "sedan", 125.0));
-        autos.add(AutoFactory.crearAuto("10", "Mazda", "6", "Rojo", "BCD444", "sedan", 118.0));
+        autos.add(AutoFactory.crearAuto("10", "Mazda", "CX-80", "Rojo", "BCD444", "sedan", 118.0));
 
     }
 
@@ -67,8 +67,7 @@ public class SistemaReservas {
 
     public void crearReserva(Reserva reserva) throws ReservaNoValida {
         reservas.add(reserva);
-        System.out.println("Reserva creada para el cliente: " + reserva.getCliente().getNombre());
-        notificador.notificar("¡Su reserva ha sido confirmada!" + reserva.getCliente());
+        notificador.notificar("¡Su reserva ha sido confirmada!");
     }
 
     public void cancelarReserva(Reserva reserva) throws ReservaNoValida {

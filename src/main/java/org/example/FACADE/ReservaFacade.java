@@ -37,9 +37,7 @@ public class ReservaFacade {
 
         NotificadorReserva notificador = new NotificadorReserva();
         notificador.agregarObservador(cliente);
-        notificador.notificar("¡Su reserva ha sido confirmada!");
-
-        SistemaReservas.getInstance().crearReserva(reserva);
+        SistemaReservas.getInstance().crearReserva(reserva);//si existe una instance de SistemaReservas, se crea la reserva
 
         return reserva;
     }

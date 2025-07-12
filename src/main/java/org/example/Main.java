@@ -18,14 +18,16 @@ import java.util.Scanner;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
+    //======================SINGLETON==========================
     static SistemaReservas sistemaReserva = SistemaReservas.getInstance();
+    //======================FACADE=============================
     ReservaFacade reservaFacade = new ReservaFacade();
+    //======================ADAPTER============================
     AutoDisponibleAdapter autoDisponibleAdapter = new AutoDisponibleAdapter(sistemaReserva.getAutos());
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcion;
-
         do{
             menu();
             System.out.print("Seleccione una opción:");
@@ -48,7 +50,10 @@ public class Main {
                         sistemaReserva.mostrarAutosDisponibles();
                         break;
                     case 5:
-                        System.out.println("Saliendo del programa...");
+                        buscarAutosDisponibles(scanner);
+                        break;
+                    case 6:
+                        crearReserva(scanner);
                         break;
                     case 0:
                         System.out.println("Saliendo del sistema de reservas...");
@@ -58,18 +63,13 @@ public class Main {
                         break;
                 }
             }
-
-
         }while(opcion != 0);
-
-
-
     }
 
     private static void menu() {
         System.out.println("\n");
         System.out.println("┌─────────────────────────────────────┐");
-        System.out.println("│           BOOKING SYSTEM            │");
+        System.out.println("│         CAR RENTAL SYSTEM           │");
         System.out.println("├─────────────────────────────────────┤");
         System.out.println("│ 1-> Registrar cliente               │");
         System.out.println("│ 2-> Buscar cliente                  │");
@@ -100,10 +100,28 @@ public class Main {
         System.out.print("Ingrese el nombre del cliente: ");
         String nombre = scanner.nextLine();
         System.out.print("Ingrese el email del cliente: ");
+        if (nombre.isEmpty()) {
+            System.out.println("El nombre no puede estar vacío.");
+            return;
+        }
         String email = scanner.nextLine();
+        if (email.isEmpty()) {
+            System.out.println("El email no puede estar vacío.");
+            return;
+        }
         System.out.print("Ingrese el DUI del cliente: ");
         String dui = scanner.nextLine();
-        Cliente cliente = new Cliente(id, nombre, email, dui);
+        if (dui.isEmpty()) {
+            System.out.println("El DUI no puede estar vacío.");
+            return;
+        }
+        System.out.print("Ingrese el telefono del cliente: ");
+        String telefono = scanner.nextLine();
+        if (telefono.isEmpty()) {
+            System.out.println("El teléfono no puede estar vacío.");
+            return;
+        }
+        Cliente cliente = new Cliente(id, nombre, email, dui, telefono);
         try {
             sistemaReserva.registrarCliente(cliente);
             System.out.println("\nCliente registrado exitosamente.");
@@ -115,6 +133,10 @@ public class Main {
     public static void buscarCliente(Scanner scanner){
         System.out.print("Ingrese ID del cliente a buscar: ");
         String id = scanner.nextLine();
+        if (id.isEmpty()) {
+            System.out.println("El ID no puede estar vacío.");
+            return;
+        }
         Cliente cliente = sistemaReserva.BuscarClientePorId(id);
         if (cliente != null) {
             System.out.println("Cliente encontrado: \n" + cliente);
@@ -123,8 +145,28 @@ public class Main {
         }
     }
 
+    //======================METODO AUTOS==========================
+    public static void buscarAutosDisponibles(Scanner scanner) {
+        System.out.print("Ingrese el tipo de auto que desea buscar: ");
+        String tipo = scanner.nextLine();
+        if (tipo.isEmpty()) {
+            System.out.println("El tipo de auto no puede estar vacío.");
+            return;
+        }
+        List<Auto> autosDisponibles = sistemaReserva.BuscarAutosPorTipo(tipo);
+        if (autosDisponibles.isEmpty()) {
+            System.out.println("No hay autos disponibles del tipo: " + tipo);
+        } else {
+            System.out.println("Autos disponibles del tipo " + tipo + ":");
+            for (Auto auto : autosDisponibles) {
+                System.out.println(auto);
+            }
+        }
+    }
+
     //======================METODO RESERVA==========================
-    public void crearReserva(Scanner scanner) {
+    public static void crearReserva(Scanner scanner) {
+        ReservaFacade reservaFacade = new ReservaFacade();
         System.out.print("Ingrese el ID del cliente: ");
         String idCliente = scanner.nextLine();
         if (idCliente.isEmpty()) {
@@ -162,24 +204,19 @@ public class Main {
         //============================================================
         System.out.print("Ingrese la cantidad de días para la reserva: ");
         int cantidadDias = scanner.nextInt();
-        scanner.nextLine();
         if (cantidadDias <= 0) {
             System.out.println("La cantidad de días debe ser mayor a cero.");
             return;
         }
 
         //============================================================
-        System.out.print("Seleccione el método de pago: ");
-        System.out.println("1. tarjeta de credito");
-        System.out.println("2. paypal");
-        String tipoPago = scanner.nextLine();
         scanner.nextLine();
+        System.out.print("Seleccione el método de pago: ");
+        System.out.println("\n1. tarjeta de credito");
+        System.out.println("2. paypal");
+        System.out.print("Seleccione tipo de pago: ");
+        String tipoPago = scanner.nextLine();
         MetodoPago metodoPago = MetodoPagoFactory.obtenerMetodoPago(tipoPago);
-
-        if (metodoPago == null) {
-            System.out.println("Método de pago no válido. Por favor, intente de nuevo.");
-            return;
-        }
 
         //============================================================
         System.out.print("¿Desea agregar servicios adicionales? (si/no): ");
@@ -191,6 +228,7 @@ public class Main {
             System.out.println("1. GPS");
             System.out.println("2. Seguro");
             System.out.println("3. GPS y Seguro");
+            System.out.print("Ingrese opcion: ");
             tipoServicio = scanner.nextLine();
             if(tipoServicio.isEmpty()) {
                 System.out.println("El tipo de servicio no puede estar vacío. No se agregará ningún servicio.");
@@ -208,17 +246,16 @@ public class Main {
                 System.out.println("Tipo de servicio no reconocido. No se agregará ningún servicio.");
                 tipoServicio = "";
             }
-        }
-        Reserva reserva = reservaFacade.realizarReserva(
-                cliente,
-                autoSeleccionado,
-                serviciosAdicionales,
-                metodoPago,
-                cantidadDias
-        );
-        System.out.println("\nReserva registrada exitosamente.");
-        }
 
-
+            Reserva reserva = reservaFacade.realizarReserva(
+                    cliente,
+                    autoSeleccionado,
+                    serviciosAdicionales,
+                    metodoPago,
+                    cantidadDias
+            );
+            System.out.println("\nReserva registrada exitosamente.");
+         }
+        }
     }
 

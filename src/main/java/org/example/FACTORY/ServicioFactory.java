@@ -15,12 +15,13 @@ public class ServicioFactory {
     ServicioBase servicioBase;
     public static Servicio crearServicio(String tipo, Servicio servicioBase) {
         switch (tipo) {
-            case "GPS":
-                return new GpsDecorator(servicioBase);
-            case "Seguro":
-                return new SeguroDecorator(servicioBase);
-            case "Seguro con GPS":
-                return new SeguroDecorator(new GpsDecorator(servicioBase));
+            case "1":
+                return new GpsDecorator(servicioBase, 50.0);
+            case "2":
+                return new SeguroDecorator(servicioBase, 100.0);
+            case "3":
+                return new SeguroDecorator(
+                        new GpsDecorator(servicioBase, 50.0), 100.0); // ← usa precios consistentes
             default:
                 return servicioBase;
         }

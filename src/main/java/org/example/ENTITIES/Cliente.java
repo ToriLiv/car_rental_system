@@ -7,12 +7,14 @@ public class Cliente implements Observer {
     private String dui;
     private String nombre;
     private String email;
+    private String telefono;
 
-    public Cliente(String id, String nombre, String email, String dui) {
+    public Cliente(String id, String nombre, String email, String dui, String telefono) {
         this.id = id;
         this.dui = dui;
         this.nombre = nombre;
         this.email = email;
+        this.telefono = telefono;
     }
 
     public String getId() {
@@ -47,6 +49,14 @@ public class Cliente implements Observer {
         this.dui = dui;
     }
 
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     @Override
     public void actualizar(String mensaje) {
         System.out.println("Notificación para " + nombre + ": " + mensaje);
@@ -59,6 +69,7 @@ public class Cliente implements Observer {
                 "\ndui: " + dui +
                 "\nnombre: " + nombre +
                 "\nemail: " + email +
+                "\ntelefono: " + telefono +
         "\n=========================";
 
     }

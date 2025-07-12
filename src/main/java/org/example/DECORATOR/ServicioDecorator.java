@@ -9,6 +9,7 @@ import org.example.INTERFACES.Servicio;
 
 public class ServicioDecorator implements Servicio {
     protected Servicio servicio;
+    protected double costoAdicional;
 
     public Servicio getServicio() {
         return servicio;
@@ -18,8 +19,9 @@ public class ServicioDecorator implements Servicio {
         this.servicio = servicio;
     }
 
-    public ServicioDecorator(Servicio servicio) {
+    public ServicioDecorator(Servicio servicio, double costoAdicional) {
         this.servicio = servicio;
+        this.costoAdicional = costoAdicional;
     }
 
     @Override
@@ -29,6 +31,13 @@ public class ServicioDecorator implements Servicio {
 
     @Override
     public double getPrecio() {
-        return servicio.getPrecio();
+        return costoAdicional;
     }
+
+    @Override
+    public double obtenerCosto() {
+        return servicio.obtenerCosto() + costoAdicional;
+    }
+
+
 }

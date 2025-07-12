@@ -8,18 +8,13 @@ import org.example.INTERFACES.Servicio;
  */
 public class GpsDecorator extends ServicioDecorator {
 
-    public GpsDecorator(Servicio servicio) {
-        super(servicio);
+    public GpsDecorator(Servicio servicio, double costoAdicional) {
+        super(servicio, costoAdicional);
     }
 
     @Override
     public String getDescripcion() {
         return servicio.getDescripcion() + " GPS incluido";
-    }
-
-    @Override
-    public double getPrecio() {
-        return servicio.getPrecio() + 25.0;
     }
 
     @Override

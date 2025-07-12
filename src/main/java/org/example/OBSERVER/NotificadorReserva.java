@@ -22,8 +22,13 @@ public class NotificadorReserva {
     }
 
     public void notificar(String mensaje) {
-        for (Observer observer : observers) {
-            observer.actualizar(mensaje);
+        String nombreCliente = mensaje.split("para el cliente: ")[1].trim();
+
+        for (Observer observador : observers) {
+            if (observador.toString().contains(nombreCliente)) {
+                observador.actualizar(mensaje); //solo al cliente que corresponde
+                break;
+            }
         }
     }
 }

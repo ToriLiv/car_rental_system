@@ -19,7 +19,6 @@ public class ReservaBuilder {
     private Cliente cliente;
     private Auto auto;
     private MetodoPago metodoPago;
-    private double costoTotal;
     private int cantidadDias;
     private ServicioDecorator servicioFinal;
 

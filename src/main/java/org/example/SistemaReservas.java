@@ -72,7 +72,6 @@ public class SistemaReservas {
 
     public void cancelarReserva(Reserva reserva) throws ReservaNoValida {
         //Lógica para cancelar una reserva
-
         if(reserva == null || !reservas.contains(reserva)) {
             throw new ReservaNoValida("La reserva no es válida o no existe.");
         }
@@ -114,7 +113,7 @@ public class SistemaReservas {
                 .collect(Collectors.toList());
     }
 
-    public List<Reserva> BuscarReservaPorClient(String dui) {
+    public List<Reserva> BuscarReservaPorCliente(String dui) {
         Cliente cliente = BuscarClientePorDui(dui);
         if (cliente == null) {
             return List.of();
@@ -144,8 +143,8 @@ public class SistemaReservas {
         for (Reserva reserva : reservas) {
             System.out.println(reserva);
         }
-
     }
+
 
     public void mostrarEstadoSistema() {
         System.out.println("========Estado del Sistema de Reservas==========");
@@ -169,4 +168,9 @@ public class SistemaReservas {
             System.out.println(auto);
         }
     }
+
+    public Reserva buscarReservaPorId(String id) {
+        return reservas.stream()
+                .findFirst()
+                .orElse(null);}
 }

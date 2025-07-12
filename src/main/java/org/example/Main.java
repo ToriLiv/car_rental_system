@@ -1,5 +1,4 @@
 package org.example;
-
 import org.example.ADAPTER.AutoDisponibleAdapter;
 import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
@@ -13,8 +12,6 @@ import org.example.FACTORY.ServicioFactory;
 import org.example.INTERFACES.AutoInfoDisponible;
 import org.example.INTERFACES.MetodoPago;
 import org.example.INTERFACES.Servicio;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -59,9 +56,20 @@ public class Main {
                         crearReserva(scanner);
                         break;
                     case 7:
+                        cancelarReserva(scanner);
+                        break;
+                    case 8:
                         sistemaReserva.mostrarReservas();
+                        break;
+                    case 9:
+                        buscarReserva(scanner);
+                        break;
+                    case 10:
+                        sistemaReserva.mostrarEstadoSistema();
+                        break;
                     case 0:
                         System.out.println("Saliendo del sistema de reservas...");
+                        scanner.close();
                         break;
                     default:
                         System.out.println("Opción no válida. Por favor, intente de nuevo.");
@@ -187,17 +195,14 @@ public class Main {
         List<Auto> todosLosAutos = SistemaReservas.getInstance().getAutos();
         AutoInfoDisponible adapter = new AutoDisponibleAdapter(todosLosAutos);
         List<Auto> disponibles = adapter.obtenerAutosDisponibles();
-
         if (disponibles.isEmpty()) {
             System.out.println("No hay autos disponibles actualmente.");
             return;
         }
-
         System.out.println("\n=====================Autos disponibles===============");
         for (int i = 0; i < disponibles.size(); i++) {
             System.out.println((i + 1) + ". " + disponibles.get(i).getModelo());
         }
-
         System.out.print("Seleccione el número del auto que desea reservar: ");
         int opcionAuto = scanner.nextInt();
         scanner.nextLine();
@@ -213,7 +218,6 @@ public class Main {
             System.out.println("La cantidad de días debe ser mayor a cero.");
             return;
         }
-
         //============================================================
         scanner.nextLine();
         System.out.print("Seleccione el método de pago: ");
@@ -235,7 +239,6 @@ public class Main {
             System.out.println("3. GPS y Seguro");
             System.out.print("Ingrese opción: ");
             String tipoServicio = scanner.nextLine();
-
             servicioFinal = ServicioFactory.crearServicio(tipoServicio, new ServicioBase());
             Reserva reserva = reservaFacade.realizarReserva(
                     cliente,
@@ -247,9 +250,42 @@ public class Main {
                     cantidadDias
             );
             System.out.println("\nReserva registrada exitosamente.");
-
         }
+    }
 
+    public static void cancelarReserva(Scanner scanner) {
+        System.out.print("Ingrese el ID de la reserva a cancelar: ");
+        String idReserva = scanner.nextLine();
+        if (idReserva.isEmpty()) {
+            System.out.println("El ID de la reserva no puede estar vacío.");
+            return;
+        }
+        Reserva reserva = sistemaReserva.buscarReservaPorId(idReserva);
+        if (reserva == null) {
+            System.out.println("Reserva no encontrada.");
+            return;
+        }
+        try {
+            sistemaReserva.cancelarReserva(reserva);
+            System.out.println("Reserva cancelada exitosamente.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public static void buscarReserva(Scanner scanner) {
+        System.out.print("Ingrese el ID de la reserva a buscar: ");
+        String idReserva = scanner.nextLine();
+        if (idReserva.isEmpty()) {
+            System.out.println("El ID de la reserva no puede estar vacío.");
+            return;
+        }
+        Reserva reserva = sistemaReserva.buscarReservaPorId(idReserva);
+        if (reserva != null) {
+            System.out.println("Reserva encontrada: \n" + reserva);
+        } else {
+            System.out.println("Reserva no encontrada.");
+        }
     }
 
 }

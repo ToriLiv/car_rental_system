@@ -1,7 +1,12 @@
 package org.example.STRATEGY;
-
 import org.example.INTERFACES.MetodoPago;
 
+/**
+ * ===================================STRATEGY=============================
+ * Esta clase representa un metodo de pago específico: Paypal.
+ * Implementa la interfaz MetodoPago y define el comportamiento de pago.
+ * ========================================================================
+ */
 public class Paypal implements MetodoPago {
 
     @Override

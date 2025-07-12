@@ -1,17 +1,12 @@
 package org.example.FACADE;
-
 import org.example.BUILD.ReservaBuilder;
 import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
 import org.example.INTERFACES.MetodoPago;
-import org.example.INTERFACES.Servicio;
 import org.example.OBSERVER.NotificadorReserva;
 import org.example.SistemaReservas;
-
-
-import java.util.List;
 
 /**
  * =========================================FACADE========================================
@@ -27,16 +22,13 @@ public class ReservaFacade {
                 .setMetodoPago(metodoPago)
                 .setCantidadDias(cantidadDias)
                 .setServicioDecorado(servicioFinal);
-
         Reserva reserva = builder.build();
         reserva.calcularCostoTotal();
         reserva.pagar();
-
-
+        //Notificar al cliente sobre la reserva
         NotificadorReserva notificador = new NotificadorReserva();
         notificador.agregarObservador(cliente);
         SistemaReservas.getInstance().crearReserva(reserva);//si existe una instance de SistemaReservas, se crea la reserva
-
         return reserva;
     }
 

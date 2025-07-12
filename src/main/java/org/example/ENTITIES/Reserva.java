@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Reserva {
+    private String id;
     private Cliente cliente;
     private Auto auto;
     private MetodoPago metodoPago;
@@ -17,6 +18,7 @@ public class Reserva {
     private ServicioDecorator servicioFinal;
 
     public Reserva(Cliente cliente, Auto auto, MetodoPago metodoPago, int cantidadDias) {
+        this.id = id;
         this.cliente = cliente;
         this.auto = auto;
         this.metodoPago = metodoPago;
@@ -60,8 +62,17 @@ public class Reserva {
     public int getCantidadDias() {
         return cantidadDias;
     }
+
     public void setCantidadDias(int cantidadDias) {
         this.cantidadDias = cantidadDias;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     //=================================METODOS==============================================
@@ -70,17 +81,15 @@ public class Reserva {
         double costoExtras = (servicioFinal != null) ? servicioFinal.obtenerCosto() : 0;
 
         this.costoTotal = costoBase + costoExtras;
-
         System.out.println("Costo base: $" + costoBase);
         System.out.println("Costo servicios: $" + costoExtras);
         System.out.println("Total a pagar: $" + this.costoTotal);
     }
-
     public void cancelarReserva() {
         this.estado = "Cancelada";
         System.out.println("Reserva cancelada para el cliente: " + cliente.getNombre());
+        auto.setDisponible(true);
     }
-
 
     public void pagar(){
         if (metodoPago != null) {
@@ -95,11 +104,15 @@ public class Reserva {
     public String toString() {
         return "========================================================\n" +
                 "Cliente:\n" + cliente.toString() +
-                "Auto:\n" + auto.toString() +
+                "\n" + auto.toString() +
+                "-----------------------------------" +
                 "Método de pago: " + metodoPago.toString() + "\n" +
-                "Costo total: $" + costoTotal + "\n" +
+                "-----------------------------------" +
                 "Cantidad de días: " + cantidadDias + "\n" +
+                "-----------------------------------" +
                 "Estado: " + estado + "\n" +
+                "-----------------------------------" +
+                "Costo total: $" + costoTotal + "\n" +
                 "========================================================\n";
     }
 

@@ -31,7 +31,7 @@ public class Main {
         int opcion;
         do{
             menu();
-            System.out.print("Seleccione una opción:");
+            System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
             scanner.nextLine();
             if(opcion < 0 || opcion > 10) {
@@ -189,6 +189,10 @@ public class Main {
             System.out.println("El ID de la reserva no puede estar vacío.");
             return;
         }
+        if (sistemaReserva.buscarReservaPorId(idReserva) != null) {
+            System.out.println("Ya existe una reserva con el ID " + idReserva);
+            return;
+        }
         System.out.print("Ingrese el ID del cliente: ");
         String idCliente = scanner.nextLine();
         if (idCliente.isEmpty()) {
@@ -234,6 +238,10 @@ public class Main {
         System.out.println("2. paypal");
         System.out.print("Seleccione tipo de pago: ");
         String tipoPago = scanner.nextLine();
+        if (tipoPago.isEmpty()) {
+            System.out.println("El tipo de pago no puede estar vacío.");
+            return;
+        }
         MetodoPago metodoPago = MetodoPagoFactory.obtenerMetodoPago(tipoPago);
 
         //============================================================
@@ -248,6 +256,10 @@ public class Main {
             System.out.println("3. GPS y Seguro");
             System.out.print("Ingrese opción: ");
             String tipoServicio = scanner.nextLine();
+            if (tipoServicio.isEmpty()) {
+                System.out.println("El tipo de servicio no puede estar vacío.");
+                return;
+            }
             servicioFinal = ServicioFactory.crearServicio(tipoServicio, new ServicioBase());
 
         }

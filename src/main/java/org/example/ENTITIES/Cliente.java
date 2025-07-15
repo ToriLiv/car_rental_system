@@ -63,13 +63,13 @@ public class Cliente implements Observer {
 
     @Override
     public String toString() {
-        return  "------------------------------\n" +
+        return  "-----------------------------------\n" +
                 "id: " + id +
                 "\ndui: " + dui +
                 "\nnombre: " + nombre +
                 "\nemail: " + email +
                 "\ntelefono: " + telefono +
-        "\n------------------------------";
+        "\n-----------------------------------";
 
     }
 }

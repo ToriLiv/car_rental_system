@@ -141,6 +141,13 @@ public class SistemaReservas {
         }
     }
 
+    public List<Reserva> reservasCliente(String idCliente){
+        return reservas.stream()
+                .filter(r -> r.getCliente().getId().equals(idCliente))
+                .toList();
+
+    }
+
 
     public void mostrarEstadoSistema() {
         System.out.println("========Estado del Sistema de Reservas==========");
@@ -148,6 +155,11 @@ public class SistemaReservas {
         System.out.println("Total de Autos: " + autos.size());
         System.out.println("Total de Autos Disponibles: " + autos.stream().filter(Auto::isDisponible).count());
         System.out.println("Total de Reservas: " + reservas.size());
+        System.out.println("Reservas por cliente:");
+        for (Cliente cliente : clientes) {
+            List<Reserva> reservasCliente = reservasCliente(cliente.getId());
+            System.out.println(cliente.getNombre() + " tiene " + reservasCliente.size() + " reservas.");
+        }
         System.out.println("================================================");
 
     }

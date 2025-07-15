@@ -19,11 +19,12 @@ public abstract class Auto {
         this.tipo = tipo;
         this.precioPorDia = precioPorDia;
         this.disponible = true; //se encuentra disponible por defecto
-
     }
 
+    //metodo abstracto que debe ser implementado por las subclases
     public abstract String getDescripcion();
 
+    //=================Getters y Setters========================
     public String getId() {
         return id;
     }
@@ -88,7 +89,7 @@ public abstract class Auto {
         this.disponible = disponible;
     }
 
-    //==============metodo para obtener la descripcion del auto=====================
+    //==============Metodo para obtener la descripcion del auto=====================
     @Override
     public String toString() {
         return "-------DESCIPCION DEL AUTO---------" + "\nId: " + id + "\nMarca: " + marca + "\nModelo: " + modelo + "\nColor: " + color +

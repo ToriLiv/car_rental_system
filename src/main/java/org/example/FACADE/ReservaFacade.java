@@ -10,12 +10,12 @@ import org.example.SistemaReservas;
 
 /**
  * =========================================FACADE========================================
- * Esta clase actúa como una fachada para simplificar la creación de reservas.
+ * Actua como una fachada para simplificar la creación de reservas.
  * Agrega servicios extras, calculando el costo total y notificando al cliente.
  * * ======================================================================================
  */
 public class ReservaFacade {
-    public Reserva realizarReserva(Cliente cliente, Auto auto, ServicioDecorator servicioFinal, MetodoPago metodoPago, int cantidadDias) {
+    public Reserva realizarReserva(String idReserva, Cliente cliente, Auto auto, ServicioDecorator servicioFinal, MetodoPago metodoPago, int cantidadDias) {
         ReservaBuilder builder = new ReservaBuilder()
                 .setCliente(cliente)
                 .setAuto(auto)
@@ -26,8 +26,7 @@ public class ReservaFacade {
         reserva.calcularCostoTotal();
         reserva.pagar();
         //Notificar al cliente sobre la reserva
-        NotificadorReserva notificador = new NotificadorReserva();
-        notificador.agregarObservador(cliente);
+        reserva.setId(idReserva);
         SistemaReservas.getInstance().crearReserva(reserva);//si existe una instance de SistemaReservas, se crea la reserva
         return reserva;
     }

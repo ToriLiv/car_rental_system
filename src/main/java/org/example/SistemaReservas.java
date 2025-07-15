@@ -47,6 +47,11 @@ public class SistemaReservas {
     }
 
 
+    /*===========================SINGLETON=============================
+     * Singleton para el sistema de reservas
+     * @return instancia del sistema de reservas
+     * ================================================================
+     */
     public static SistemaReservas getInstance(){
         if(instance == null){
             instance = new SistemaReservas();
@@ -67,16 +72,16 @@ public class SistemaReservas {
 
     public void crearReserva(Reserva reserva) throws ReservaNoValida {
         reservas.add(reserva);
-        notificador.notificar("¡Su reserva ha sido confirmada!");
+        notificador.notificar("Nueva reserva creada para el cliente: " + reserva.getCliente().getNombre());
     }
 
     public void cancelarReserva(Reserva reserva) throws ReservaNoValida {
         //Lógica para cancelar una reserva
-        if(reserva == null || !reservas.contains(reserva)) {
+        if(reserva == null){
             throw new ReservaNoValida("La reserva no es válida o no existe.");
         }
         reserva.cancelarReserva();
-        notificador.notificar("La reserva ha sido cancelada: " + reserva.getCliente().getNombre());
+        notificador.notificar("La reserva ha sido cancelada para el cliente: " + reserva.getCliente().getNombre());
     }
 
     private Auto BuscarAutoDisponible(String tipo) throws AutosNoDisponibles {
@@ -113,15 +118,6 @@ public class SistemaReservas {
                 .collect(Collectors.toList());
     }
 
-    public List<Reserva> BuscarReservaPorCliente(String dui) {
-        Cliente cliente = BuscarClientePorDui(dui);
-        if (cliente == null) {
-            return List.of();
-        }
-        return reservas.stream()
-                .filter(reserva -> reserva.getCliente().getDui().equals(dui))
-                .collect(Collectors.toList());
-    }
 
     public void mostrarClientes() {
         if (clientes.isEmpty()) {
@@ -150,6 +146,7 @@ public class SistemaReservas {
         System.out.println("========Estado del Sistema de Reservas==========");
         System.out.println("Total de Clientes: " + clientes.size());
         System.out.println("Total de Autos: " + autos.size());
+        System.out.println("Total de Autos Disponibles: " + autos.stream().filter(Auto::isDisponible).count());
         System.out.println("Total de Reservas: " + reservas.size());
         System.out.println("================================================");
 
@@ -171,6 +168,8 @@ public class SistemaReservas {
 
     public Reserva buscarReservaPorId(String id) {
         return reservas.stream()
+                .filter(reserva -> reserva.getId() != null && reserva.getId().equals(id))
                 .findFirst()
-                .orElse(null);}
+                .orElse(null);
+    }
 }

@@ -5,3 +5,4 @@ public class AutosNoDisponibles extends Exception {
         super(message);
     }
 }
+

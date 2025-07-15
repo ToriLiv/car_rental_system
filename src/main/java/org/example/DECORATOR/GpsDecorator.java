@@ -1,5 +1,4 @@
 package org.example.DECORATOR;
-
 import org.example.INTERFACES.Servicio;
 
 /*-------------------------DECORATOR-------------------------

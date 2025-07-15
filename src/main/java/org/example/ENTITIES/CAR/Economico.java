@@ -1,5 +1,6 @@
 package org.example.ENTITIES.CAR;
 
+//hereda de la clase Auto
 public class Economico extends  Auto{
 
     public Economico(String id, String marca, String modelo, String color, String matricula, double precioPorDia) {

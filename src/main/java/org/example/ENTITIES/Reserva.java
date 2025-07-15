@@ -1,11 +1,7 @@
 package org.example.ENTITIES;
-
 import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.INTERFACES.MetodoPago;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Reserva {
     private String id;
@@ -103,17 +99,18 @@ public class Reserva {
     @Override
     public String toString() {
         return "========================================================\n" +
-                "Cliente:\n" + cliente.toString() +
+                "Reserva ID: " + id +
+                "\nCliente:\n" + cliente.toString() +
                 "\n" + auto.toString() +
-                "-----------------------------------" +
-                "Método de pago: " + metodoPago.toString() + "\n" +
-                "-----------------------------------" +
-                "Cantidad de días: " + cantidadDias + "\n" +
-                "-----------------------------------" +
-                "Estado: " + estado + "\n" +
-                "-----------------------------------" +
-                "Costo total: $" + costoTotal + "\n" +
-                "========================================================\n";
+                "\n-----------------------------------" +
+                "\nMétodo de pago: " + metodoPago.toString() +
+                "\n-----------------------------------" +
+                "\nCantidad de días: " + cantidadDias  +
+                "\n-----------------------------------" +
+                "\nEstado: " + estado  +
+                "\n-----------------------------------" +
+                "\nCosto total: $" + costoTotal  +
+                "\n========================================================\n";
     }
 
     public void setServicioDecorado(ServicioDecorator servicioFinal) {

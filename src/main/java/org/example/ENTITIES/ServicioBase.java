@@ -1,7 +1,6 @@
 package org.example.ENTITIES;
-
 import org.example.INTERFACES.Servicio;
-
+//-------------------------BASE-------------------------
 public class ServicioBase implements Servicio {
 
     @Override

@@ -1,19 +1,16 @@
 package org.example.BUILD;
-
 import org.example.DECORATOR.ServicioDecorator;
 import org.example.ENTITIES.CAR.Auto;
 import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
+import org.example.ENTITIES.ServicioBase;
 import org.example.INTERFACES.MetodoPago;
 
 /*=====================================BUILD========================================================
  * ReservaBuilder es una clase que permite construir objetos Reserva de manera fluida.
- * Utiliza el patrón Builder para facilitar la creación de reservas con diferentes configuraciones.
+ * Se facilita la creación de reservas con diferentes configuraciones.
  * ==================================================================================================
  */
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReservaBuilder {
     private Cliente cliente;
@@ -43,7 +40,11 @@ public ReservaBuilder setCantidadDias(int cantidadDias) {
     }
 
     public ReservaBuilder setServicioDecorado(ServicioDecorator servicioFinal) {
-        this.servicioFinal = servicioFinal;
+        if (servicioFinal == null) {
+            this.servicioFinal = new ServicioDecorator(new ServicioBase(), 0);
+        } else {
+            this.servicioFinal = servicioFinal;
+        }
         return this;
     }
 
@@ -52,5 +53,4 @@ public ReservaBuilder setCantidadDias(int cantidadDias) {
         reserva.setServicioDecorado(servicioFinal);
         return reserva;
     }
-
 }

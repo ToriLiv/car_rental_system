@@ -3,7 +3,7 @@ import org.example.INTERFACES.MetodoPago;
 
 /**
  * ===================================STRATEGY=============================
- * Esta clase representa un metodo de pago específico: Paypal.
+ * Representa un metodo de pago específico: Paypal.
  * Implementa la interfaz MetodoPago y define el comportamiento de pago.
  * ========================================================================
  */

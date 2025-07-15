@@ -6,6 +6,7 @@ import org.example.ENTITIES.Cliente;
 import org.example.ENTITIES.Reserva;
 import org.example.ENTITIES.ServicioBase;
 import org.example.EXCEPTIONS.ClienteDuplicado;
+import org.example.EXCEPTIONS.ReservaNoValida;
 import org.example.FACADE.ReservaFacade;
 import org.example.FACTORY.MetodoPagoFactory;
 import org.example.FACTORY.ServicioFactory;
@@ -35,7 +36,8 @@ public class Main {
             scanner.nextLine();
             if(opcion < 0 || opcion > 10) {
                 System.out.println("Opción no válida. Por favor, intente de nuevo.");
-            } else {
+            }
+            else {
                 switch (opcion) {
                     case 1:
                         registrarCliente(scanner);
@@ -160,6 +162,7 @@ public class Main {
 
     //======================METODO AUTOS==========================
     public static void buscarAutosDisponibles(Scanner scanner) {
+        System.out.println("deportivo, economico, sedan o pickup");
         System.out.print("Ingrese el tipo de auto que desea buscar: ");
         String tipo = scanner.nextLine();
         if (tipo.isEmpty()) {
@@ -180,6 +183,12 @@ public class Main {
     //======================METODO RESERVA==========================
     public static void crearReserva(Scanner scanner) {
         ReservaFacade reservaFacade = new ReservaFacade();
+        System.out.print("Ingrese el ID de la reserva: ");
+        String idReserva = scanner.nextLine();
+        if (idReserva.isEmpty()) {
+            System.out.println("El ID de la reserva no puede estar vacío.");
+            return;
+        }
         System.out.print("Ingrese el ID del cliente: ");
         String idCliente = scanner.nextLine();
         if (idCliente.isEmpty()) {
@@ -201,7 +210,7 @@ public class Main {
         }
         System.out.println("\n=====================Autos disponibles===============");
         for (int i = 0; i < disponibles.size(); i++) {
-            System.out.println((i + 1) + ". " + disponibles.get(i).getModelo());
+            System.out.println((i + 1) + ". " + disponibles.get(i).getModelo() + "-> Precio por día: $" + disponibles.get(i).getPrecioPorDia());
         }
         System.out.print("Seleccione el número del auto que desea reservar: ");
         int opcionAuto = scanner.nextInt();
@@ -240,17 +249,19 @@ public class Main {
             System.out.print("Ingrese opción: ");
             String tipoServicio = scanner.nextLine();
             servicioFinal = ServicioFactory.crearServicio(tipoServicio, new ServicioBase());
-            Reserva reserva = reservaFacade.realizarReserva(
-                    cliente,
-                    autoSeleccionado,
-                    servicioFinal instanceof ServicioDecorator
-                            ? (ServicioDecorator) servicioFinal
-                            : new ServicioDecorator(servicioFinal, 0),
-                    metodoPago,
-                    cantidadDias
-            );
-            System.out.println("\nReserva registrada exitosamente.");
+
         }
+        Reserva reserva = reservaFacade.realizarReserva(
+                idReserva,
+                cliente,
+                autoSeleccionado,
+                servicioFinal instanceof ServicioDecorator
+                        ? (ServicioDecorator) servicioFinal
+                        : new ServicioDecorator(servicioFinal, 0),
+                metodoPago,
+                cantidadDias
+        );
+        System.out.println("\nReserva registrada exitosamente.");
     }
 
     public static void cancelarReserva(Scanner scanner) {
@@ -268,9 +279,11 @@ public class Main {
         try {
             sistemaReserva.cancelarReserva(reserva);
             System.out.println("Reserva cancelada exitosamente.");
-        } catch (Exception e) {
+        } catch (ReservaNoValida e) {
             System.err.println(e.getMessage());
         }
+
+
     }
 
     public static void buscarReserva(Scanner scanner) {

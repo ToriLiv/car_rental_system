@@ -8,3 +8,5 @@ public interface Servicio {
     public double obtenerCosto();
 
 }
+
+//----interfaz que define los metodos que debe implementar un servicio
